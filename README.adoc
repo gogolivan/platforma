@@ -1,0 +1,106 @@
+= Platforma
+
+Platforma acts as a provider, securely delivering reusable assets to standardize cross-project integration.
+
+ifdef::env-github[]
+:MERMAID: source, mermaid
+endif::[]
+ifndef::env-github[]
+:MERMAID: mermaid
+endif::[]
+[{MERMAID}]
+----
+flowchart TB
+    %% Styles
+    classDef container fill:#248fb2,color:#fff;
+    classDef sandbox fill:#2d3436,color:#fff;
+
+    subgraph host["Host Machine (Physical/Virtual Server)"]
+        subgraph docker["Docker Engine (Container Runtime)"]
+            subgraph modules["Modules (Hardened Development Containers)"]
+                subgraph sg_proto["Proto"]
+                        direction TB
+                        proto["platforma-proto"]:::container
+                        proto_vol[("platforma-proto")]:::volume
+                end
+
+                subgraph sg_actions["Actions"]
+                    actions["platforma-actions"]:::container
+                    actions_vol[("platforma-actions")]:::volume
+                end
+
+                subgraph sg_catalog["Catalog"]
+                    catalog["platforma-catalog"]:::container
+                    catalog_vol[("platforma-catalog")]:::volume
+                end
+            end            
+
+            subgraph sg_sandbox["Sandbox (Docker Container)"]
+                sandbox["platforma-sandbox"]:::sandbox
+            end
+
+            subgraph sg_features["Features"]
+                features["platforma-features"]:::container
+                features_vol[("platforma-features")]:::volume
+            end
+
+            subgraph sg_skills["Skills"]
+                skills["platforma-skills"]:::container
+            end
+
+            subgraph sg_operators["Operators"]
+                operators["platforma-operators"]:::container
+            end
+        end
+    end
+
+    actions -- rw --> actions_vol
+    catalog -- rw --> catalog_vol
+    proto -- rw --> proto_vol
+    features -- rw --> features_vol
+
+    sandbox -- rw --> actions_vol
+    sandbox -- rw --> catalog_vol
+    sandbox -- rw --> proto_vol
+
+    linkStyle 4,5,6 stroke:orange,stroke-width:2px,color:orange;
+
+----      
+
+== Development Containers
+Platforma uses Development Containers (https://containers.dev/) to provide consistent development environments for each module.
+
+== Modules
+* `platforma/actions`: GitHub Actions
+* `platforma/catalog`: Software Catalog
+* `platforma/proto`: Protocol Buffers definitions
+* `platforma/features`: Dev Container Features
+* `platforma/skills`: Agent Skills
+* `platforma/operators`: Kubernetes Operators
+
+== Sandbox
+The `platforma/sandbox` module serves as a strictly isolated environment for building and running modules.
+
+[NOTE]
+====
+For production, it is recommended to run each module with https://katacontainers.io/[Kata Containers] _microVM_ container runtime by setting the `--runtime=kata-runtime` _Docker_ flag.
+====
+
+== Configuration
+=== Firewall
+`platforma/features` **firewall** sets up firewall rules to restrict network access within containers.
+
+=== Scanner
+`platforma/features` **scanner** integrates security checks.
+
+[NOTE]
+====
+Dev Container Features scripts can be used outside of Development Containers configuration and run in any compatible environment.
+====
+
+== References
+* https://git-scm.com/book/en/v2/Git-Tools-Submodules[Git Submodules]
+
+* https://containers.dev/[Development Containers]
+
+* https://katacontainers.io/[Kata Containers]

@@ -1,0 +1,69 @@
+services:
+  platforma-actions:
+    build:
+      context: .
+      dockerfile: .devcontainer/platforma-actions/Dockerfile
+    container_name: platforma-actions
+    volumes:
+      - platforma_actions:/workspace/platforma-actions
+    command: sleep infinity
+    post_start:
+      - command: /usr/local/bin/firewall.sh
+        user: root
+    cap_add: [
+      NET_ADMIN, NET_RAW # Firewall
+    ]
+    security_opt:
+      - no-new-privileges
+
+  platforma-catalog:
+    build:
+      context: .
+      dockerfile: .devcontainer/platforma-catalog/Dockerfile
+    container_name: platforma-catalog
+    volumes:
+      - platforma_catalog:/workspace/platforma-catalog
+    command: sleep infinity
+    cap_add: []
+    security_opt:
+      - no-new-privileges
+
+  platforma-proto:
+    build:
+      context: .
+      dockerfile: .devcontainer/platforma-proto/Dockerfile
+    container_name: platforma-proto
+    volumes:
+      - platforma_proto:/workspace/platforma-proto
+    command: sleep infinity
+    cap_add: []
+    security_opt:
+      - no-new-privileges
+
+  platforma-sandbox:
+    build:
+      context: .
+      dockerfile: Dockerfile.sandbox
+    container_name: platforma-sandbox
+    restart: no
+    stdin_open: true
+    tty: true
+    depends_on:
+      - platforma-actions
+      - platforma-catalog
+      - platforma-proto
+    ports:
+      - "3000:3000"
+      - "7007:7007"
+    volumes:
+      - platforma_actions:/workspace/actions
+      - platforma_catalog:/workspace/catalog
+      - platforma_proto:/workspace/proto
+    cap_add: []
+    security_opt:
+      - no-new-privileges
+
+volumes:
+  platforma_actions:
+  platforma_catalog:
+  platforma_proto:

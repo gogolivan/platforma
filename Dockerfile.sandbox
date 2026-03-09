@@ -1,0 +1,27 @@
+FROM mcr.microsoft.com/devcontainers/base:bookworm
+
+# Use bash for the shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+WORKDIR /workspace
+
+USER root
+RUN apt update && apt-get install -y inotify-tools \
+make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev curl git \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+# Setup script
+COPY scripts/setup.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/setup.sh
+RUN chown vscode:vscode /usr/local/bin/setup.sh
+
+# Start script
+COPY scripts/start.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/start.sh
+RUN chown vscode:vscode /usr/local/bin/start.sh
+
+USER vscode
+RUN /usr/local/bin/setup.sh
+
+CMD ["/bin/bash", "-lc", "/usr/local/bin/start.sh; exec /bin/bash"]

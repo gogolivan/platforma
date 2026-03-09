@@ -1,0 +1,33 @@
+{
+  "name": "Platforma Actions",
+  "dockerComposeFile": [
+    "../../docker-compose.yml"
+  ],
+  "service": "platforma-actions",
+  //"shutdownAction": "none",
+  "workspaceFolder": "/workspace/platforma-actions",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker",
+        "asciidoctor.asciidoctor-vscode"
+      ]
+    },
+
+    "settings": {
+      "editor.tabSize": 2
+    }
+  },
+
+  "remoteUser": "vscode",
+    
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": ""
+
+  // Use 'postStartCommand' to run commands after the container is started.
+  "postStartCommand": "post-start.sh",
+  "waitFor": "postStartCommand"
+}
