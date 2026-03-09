@@ -1,3 +1,6 @@
 [submodule "platforma-features"]
 	path = platforma-features
 	url = https://github.com/gogolivan/platforma-features
+[submodule "platforma-actions"]
+	path = platforma-actions
+	url = https://github.com/gogolivan/platforma-actions
