@@ -7,3 +7,6 @@
 [submodule "platforma-proto"]
 	path = platforma-proto
 	url = https://github.com/gogolivan/platforma-proto
+[submodule "platforma-catalog"]
+	path = platforma-catalog
+	url = https://github.com/gogolivan/platforma-catalog
