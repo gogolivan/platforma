@@ -13,3 +13,6 @@
 [submodule "platforma-operators"]
 	path = platforma-operators
 	url = https://github.com/gogolivan/platforma-operators
+[submodule "platforma-skills"]
+	path = platforma-skills
+	url = https://github.com/gogolivan/platforma-skills
