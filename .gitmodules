@@ -10,3 +10,6 @@
 [submodule "platforma-catalog"]
 	path = platforma-catalog
 	url = https://github.com/gogolivan/platforma-catalog
+[submodule "platforma-operators"]
+	path = platforma-operators
+	url = https://github.com/gogolivan/platforma-operators
